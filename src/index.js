@@ -11,6 +11,7 @@ function App() {
   For the rest, you can ignore this file, check CustomStyle.js
 */
   const canvasRef = useRef();
+  const attributesRef = useRef();
   const { ref, width, height } = useDimensions({});
   const _onCanvasResize = (p5) => {
     p5.resizeCanvas(width, height);
@@ -33,6 +34,7 @@ function App() {
           block={blocks[0]} // Example: Change "block = block[0]" to block[1] or block[2] to see how different blocks look with the code written
           height={height}
           canvasRef={canvasRef}
+          attributesRef={attributesRef}
           handleResize={_onCanvasResize}
         />
       ) : null}

@@ -30,6 +30,7 @@ let DEFAULT_SIZE = 500;
 const CustomStyle = ({
   block,
   canvasRef,
+  attributesRef,
   width,
   height,
   handleResize,
@@ -47,8 +48,15 @@ const CustomStyle = ({
   const setup = (p5, canvasParentRef) => {
     // Keep reference of canvas element for snapshots
     let _p5 = p5.createCanvas(width, height).parent(canvasParentRef);
-    canvasRef.current = () => {
-      return _p5.canvas.toDataURL('image/png');
+    canvasRef.current = p5;
+
+    attributesRef.current = () => {
+      return {
+        // This is called when the final image is generated, when creator opens the Mint NFT modal.
+        // should return an object structured following opensea/enjin metadata spec for attributes/properties
+        // https://docs.opensea.io/docs/metadata-standards
+        // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema
+      };
     };
   };
 
