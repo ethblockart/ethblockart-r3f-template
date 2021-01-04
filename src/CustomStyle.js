@@ -81,7 +81,7 @@ const CustomStyle = ({
     let seed = parseInt(hash.slice(0, 16), 16);
     shuffleBag.current = new MersenneTwister(seed);
     let objs = block.transactions.map((t) => {
-      let seed = parseInt(t.slice(0, 16), 16);
+      let seed = parseInt(t.hash.slice(0, 16), 16);
       return {
         y: shuffleBag.current.random(),
         x: shuffleBag.current.random(),
