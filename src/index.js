@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import useDimensions from 'react-cool-dimensions';
 import blocks from './blocks';
 import CustomStyle from './CustomStyle';
+import ControlSlider from './components/ControlSlider';
 
 function App() {
   /*
@@ -10,6 +11,11 @@ function App() {
   As a creative coder, in this file you can swap between the block data provided on line 40
   For the rest, you can ignore this file, check CustomStyle.js
 */
+  const [blockNumber, setBlockNumber] = useState(2);
+  function changeModValue(modSetFunction, e) {
+    modSetFunction(e)
+  }
+
   const canvasRef = useRef();
   const attributesRef = useRef();
   const { ref, width, height } = useDimensions({});
@@ -28,10 +34,18 @@ function App() {
       }}
     >
       <p>EthBlock.art P5.js boilerplate</p>
+      <ControlSlider
+        controlLabel="Block"
+        modValue={blockNumber}
+        modValueMin="1"
+        modValueMax={blocks.length}
+        modValueStep="1"
+        onChange={(e) => { changeModValue(setBlockNumber, e) }}
+      />
       {width && height ? (
         <CustomStyle
           width={width}
-          block={blocks[1]} // Example: Change "block = block[0]" to block[1] or block[2] to see how different blocks look with the code written
+          block={blocks[blockNumber-1]} // Example: Change "block = block[0]" to block[1] or block[2] to see how different blocks look with the code written
           height={height}
           canvasRef={canvasRef}
           attributesRef={attributesRef}
