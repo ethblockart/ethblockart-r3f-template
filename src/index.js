@@ -13,9 +13,9 @@ function App() {
   For the rest, you can ignore this file, check CustomStyle.js
 */
   const defaultBlockNumber = 2;
-  const defaultMod1Value = 0.33;
-  const defaultMod2Value = 0.66;
-  const defaultBackgroundColor = '#eeeeee';
+  const defaultMod1Value = 0.75;
+  const defaultMod2Value = 0.25;
+  const defaultBackgroundColor = '#cccccc';
 
   const [blockNumber, setBlockNumber] = useState(defaultBlockNumber);
   const [mod1, setMod1] = useState(defaultMod1Value);

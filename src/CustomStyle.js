@@ -8,7 +8,7 @@ Create your Custom style to be turned into a EthBlock.art Mother NFT
 Basic rules:
  - use a minimum of 1 and a maximum of 4 "modifiers", modifiers are values between 0 and 1,
  - use a minimum of 1 and a maximum of 3 colors, the color "background" will be set at the canvas root
- - Use the block as source of entropy, no Math.random() allowed! 
+ - Use the block as source of entropy, no Math.random() allowed!
  - You can use a "shuffle bag" using data from the block as seed, a MersenneTwister library is provided
 
  Arguments:
@@ -43,7 +43,7 @@ const CustomStyle = ({
 }) => {
   const shuffleBag = useRef();
   const hoistedValue = useRef();
- 
+
   const { hash } = block;
 
   // setup() initializes p5 and the canvas element, can be mostly ignored in our case (check draw())
@@ -58,19 +58,19 @@ const CustomStyle = ({
         // should return an object structured following opensea/enjin metadata spec for attributes/properties
         // https://docs.opensea.io/docs/metadata-standards
         // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema
-       
+
        attributes: [
           {
             display_type: 'number',
             trait_type: 'your trait here number',
             value: hoistedValue.current, // using the hoisted value from within the draw() method, stored in the ref.
           },
-         
+
           {
             trait_type: 'your trait here text',
             value: "replace me",
           },
-          
+
         ],
       };
     };
@@ -104,13 +104,13 @@ const CustomStyle = ({
         radius: seed / 1000000000000000,
       };
     });
-   
+
     // example assignment of hoisted value to be used as NFT attribute later
    hoistedValue.current = 42;
-   
+
     objs.map((dot, i) => {
       p5.stroke(color1);
-      p5.strokeWeight(1);
+      p5.strokeWeight(1 + (mod2 * 10));
       p5.ellipse(
         200 * dot.y * 6 * M,
         100 * dot.x * 6 * M,
