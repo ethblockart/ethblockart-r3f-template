@@ -28,74 +28,6 @@ Getting started:
 
  - check out react-three-fiber documentation for examples!
 */
-
-const tempObject = new THREE.Object3D();
-const tempColor = new THREE.Color();
-const colors = new Array(1000).fill().map(() => 'red');
-
-function Boxes() {
-  const [hovered, set] = useState();
-  const colorArray = useMemo(
-    () =>
-      Float32Array.from(
-        new Array(1000)
-          .fill()
-          .flatMap((_, i) => tempColor.set(colors[i]).toArray())
-      ),
-    []
-  );
-
-  const ref = useRef();
-  const previous = useRef();
-  // useEffect(() => void (previous.current = hovered), [hovered]);
-
-  useFrame((state) => {
-    // const time = state.clock.getElapsedTime();
-    // ref.current.rotation.x = Math.sin(time / 4);
-    // ref.current.rotation.y = Math.sin(time / 2);
-    let i = 0;
-    for (let x = 0; x < 10; x++)
-      for (let y = 0; y < 10; y++)
-        for (let z = 0; z < 10; z++) {
-          const id = i++;
-          tempObject.position.set(5 - x, 5 - y, 5 - z);
-          // tempObject.rotation.y =
-          //   Math.sin(x / 4 + time) +
-          //   Math.sin(y / 4 + time) +
-          //   Math.sin(z / 4 + time);
-          tempObject.rotation.z = tempObject.rotation.y * 2;
-          if (hovered !== previous.current) {
-            tempColor
-              .set(id === hovered ? 'white' : colors[id])
-              .toArray(colorArray, id * 3);
-            ref.current.geometry.attributes.color.needsUpdate = true;
-          }
-          const scale = id === hovered ? 2 : 1;
-          tempObject.scale.set(scale, scale, scale);
-          tempObject.updateMatrix();
-          ref.current.setMatrixAt(id, tempObject.matrix);
-        }
-    ref.current.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh
-      ref={ref}
-      args={[null, null, 1000]}
-      onPointerMove={(e) => set(e.instanceId)}
-      onPointerOut={(e) => set(undefined)}
-    >
-      <boxBufferGeometry attach="geometry" args={[0.7, 0.7, 0.7]}>
-        <instancedBufferAttribute
-          attachObject={['attributes', 'color']}
-          args={[colorArray, 3]}
-        />
-      </boxBufferGeometry>
-      <meshPhongMaterial attach="material" vertexColors={THREE.VertexColors} />
-    </instancedMesh>
-  );
-}
-
 let DEFAULT_SIZE = 500;
 
 // Handle correct scaling of scene as canvas is resized, and when generating upscaled version.
@@ -142,7 +74,6 @@ const CustomStyle = React.memo(
     }, [camera, width, height]);
 
     const { hash } = block;
-    const hashLastDigit = parseInt(hash[hash.length - 1], 36);
 
     const [spheres, scale, color] = useMemo(() => {
       const seed = parseInt(hash.slice(0, 16), 16);
@@ -170,7 +101,6 @@ const CustomStyle = React.memo(
       return [spheres, scale, color];
     });
 
-    console.log(spheres, scale, color);
     return (
       <group ref={group} position={[-0, 0, 0]} rotation={[0, mod2, 0]}>
         <ambientLight intensity={1} />
@@ -189,18 +119,6 @@ const CustomStyle = React.memo(
                 <meshNormalMaterial attach="material" />
               </TorusKnot>
             </group>
-            // {/* // <mesh > */}
-            // <RoundedBox
-            //   args={[1, 1, 1]} // Width, Height and Depth of the box
-            //   radius={scale} // Border-Radius of the box
-            //   // smoothness={mod2} // Optional, number of subdivisions
-            //   // {...meshProps} // All THREE.Mesh props are valid
-            // ></RoundedBox>
-            // // {/* <BufferGeometry args={[scale * mod1]} /> */}
-            // <meshPhongMaterial attach="material" color={color} wireframe />
-            // {/* <meshStandardMaterial color={color} /> */}
-            // {/* // </mesh> */}
-            // </group>
           );
         })}
       </group>
