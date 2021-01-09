@@ -115,7 +115,7 @@ const CustomStyle = React.memo(
         {spheres.map((sp) => {
           return (
             <group position={sp}>
-              <TorusKnot args={[scale * 100, mod1, mod2 * 1000, 4]}>
+              <TorusKnot args={[scale * 100, mod1 / 10, mod2 * 1000, 4]}>
                 <meshNormalMaterial attach="material" />
               </TorusKnot>
             </group>

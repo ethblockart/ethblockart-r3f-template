@@ -17,7 +17,7 @@ function App() {
   For the rest, you can ignore this file, check CustomStyle.js
 */
   const defaultBlockNumber = 2;
-  const defaultMod1Value = 0.75;
+  const defaultMod1Value = 0.2;
   const defaultMod2Value = 0.25;
   const defaultBackgroundColor = '#cccccc';
 
