@@ -127,3 +127,18 @@ const CustomStyle = React.memo(
 );
 
 export default CustomStyle;
+
+const styleMetadata = {
+  name: '',
+  description: '',
+  image: '',
+  creator_name: '',
+  options: {
+    mod1: 0.4,
+    mod2: 0.1,
+    color1: '#fff000',
+    background: '#000000',
+  },
+};
+
+export { styleMetadata };

@@ -1,43 +1,41 @@
 import ReactDOM from 'react-dom';
 import React, { useRef, useState, useEffect } from 'react';
-import useDimensions from 'react-cool-dimensions';
 import blocks from './blocks';
-import CustomStyle from './CustomStyle';
-import ControlSlider from './components/ControlSlider';
-import ControlColorPicker from './components/ControlColorPicker';
+import CustomStyle, { styleMetadata } from './CustomStyle';
 import { Canvas } from 'react-three-fiber';
+import { proxy, useProxy } from 'valtio';
+import Sidebar from './components/Sidebar';
 
-function App() {
-  const gl = useRef(null);
-  const attributesRef = useRef();
+const store = proxy({
+  blockNumber: 2,
+  ...styleMetadata,
+});
 
-  /*
+/*
   Wrapped Component required to make demos compatible with EthBlock.art
   As a creative coder, in this file you can swap between the block data provided on line 40
   For the rest, you can ignore this file, check CustomStyle.js
 */
-  const defaultBlockNumber = 2;
-  const defaultMod1Value = 0.2;
-  const defaultMod2Value = 0.25;
-  const defaultBackgroundColor = '#cccccc';
-
-  const [blockNumber, setBlockNumber] = useState(defaultBlockNumber);
-  const [mod1, setMod1] = useState(defaultMod1Value);
-  const [mod2, setMod2] = useState(defaultMod2Value);
-  const [backgroundColor, setBackgroundColor] = useState(
-    defaultBackgroundColor
-  );
-
-  function changeModValue(modSetFunction, e) {
-    modSetFunction(e);
-  }
+function App() {
+  const snap = useProxy(store);
+  const gl = useRef(null);
+  const attributesRef = useRef();
 
   useEffect(() => {
-    console.log('wtd');
-    if (gl.current && backgroundColor) {
-      gl.current.setClearColor(backgroundColor);
+    if (gl.current && snap.options.background) {
+      gl.current.setClearColor(snap.options.background);
     }
-  }, [backgroundColor, gl]);
+  }, [snap.options.background, gl]);
+
+  const mods = Object.keys(store.options).map((k) => {
+    return {
+      key: k,
+      value: snap.options[k],
+      set: (v) => {
+        store.options[k] = v;
+      },
+    };
+  });
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
@@ -60,9 +58,8 @@ function App() {
             camera={{ zoom: 300, position: [0, 0, 100] }}
             gl={{ preserveDrawingBuffer: true }}
             onCreated={(context) => {
-              // canvasRef.current = context.gl.domElement;
               gl.current = context.gl;
-              gl.current.setClearColor(backgroundColor);
+              gl.current.setClearColor(snap.options.background);
             }}
             pixelRatio={window.devicePixelRatio}
             sx={{
@@ -71,85 +68,21 @@ function App() {
             }}
           >
             <CustomStyle
-              block={blocks[blockNumber - 1]}
-              // background={backgroundColor}
-              mod1={mod1}
-              mod2={mod2}
+              block={blocks[snap.blockNumber]}
               attributesRef={attributesRef}
+              {...snap.options}
             />
           </Canvas>
         </div>
       </div>
 
-      <div
-        style={{
-          width: '200px',
-          borderLeft: '#e0e0e0 1px solid',
-          backgroundColor: '#fff',
-        }}
-      >
-        <div
-          style={{
-            height: '40px',
-            background: '#000',
-            color: '#fff',
-            lineHeight: '40px',
-            textAlign: 'center',
-          }}
-        >
-          Change Block
-        </div>
-        <div style={{ padding: '20px' }}>
-          <ControlSlider
-            modValue={blockNumber}
-            modValueMin="1"
-            modValueMax={blocks.length}
-            modValueStep="1"
-            onChange={(e) => {
-              changeModValue(setBlockNumber, e);
-            }}
-          />
-        </div>
-
-        <div
-          style={{
-            height: '40px',
-            background: '#000',
-            color: '#fff',
-            lineHeight: '40px',
-            textAlign: 'center',
-          }}
-        >
-          Change Style
-        </div>
-        <div style={{ padding: '20px' }}>
-          {
-            <ControlSlider
-              controlLabel="mod1"
-              modValue={mod1}
-              onChange={(e) => {
-                changeModValue(setMod1, e);
-              }}
-            />
-          }
-          {
-            <ControlSlider
-              controlLabel="mod2"
-              modValue={mod2}
-              onChange={(e) => {
-                changeModValue(setMod2, e);
-              }}
-            />
-          }
-          <ControlColorPicker
-            controlLabel="background"
-            modValue={backgroundColor}
-            onChange={(e) => {
-              changeModValue(setBackgroundColor, e);
-            }}
-          />
-        </div>
-      </div>
+      <Sidebar
+        blocks={blocks}
+        blockNumber={snap.blockNumber}
+        attributes={attributesRef.current || {}}
+        mods={mods}
+        handleBlockChange={(e) => (store.blockNumber = e)}
+      />
     </div>
   );
 }

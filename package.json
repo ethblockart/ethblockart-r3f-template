@@ -16,6 +16,7 @@
     "react-scripts": "4.0.1",
     "react-three-fiber": "^5.3.11",
     "three": "^0.124.0",
+    "valtio": "^0.6.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
