@@ -1,0 +1,26 @@
+.control-color-picker {
+  margin: 5px 0;
+  font-size: 12px;
+}
+
+.control-color-picker label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.control-color-picker input[type='color'] {
+  box-sizing: border-box;
+  margin: 0px;
+  min-width: 0px;
+  display: block;
+  padding: 8px;
+  appearance: none;
+  border-width: 1px;
+  border-style: solid;
+  border-image: initial;
+  background-color: transparent;
+  border-radius: 0px;
+  border-color: #e0e0e0;
+  width: 64px;
+  height: 32px;
+}
