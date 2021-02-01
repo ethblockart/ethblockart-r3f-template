@@ -1,6 +1,6 @@
-# EthBlock.art BlockStyle Template - P5.js
+# EthBlock.art BlockStyle Template - Three.js
 
-Get started writing styles for [https://ethblock.art] with react-three-ber using this template!
+Get started writing styles for [https://ethblock.art] with react-three-fiber using this template!
 
 ```bash
 $ git clone
