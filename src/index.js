@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import blocks from './blocks';
 import CustomStyle, { styleMetadata } from './CustomStyle';
 import { Canvas } from 'react-three-fiber';
