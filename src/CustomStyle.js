@@ -50,7 +50,8 @@ export default function CustomStyle(props) {
     console.log(`rendering`)
 
     // Props
-    const { block, mod1, mod2, mod3, color1, attributesRef } = props;
+    const { block, options, attributesRef } = props;
+    const { mod1, mod2, mod3, color1 } =  options;
 
     // Local state
     const [tori, setTori] = useState([]);
@@ -64,6 +65,40 @@ export default function CustomStyle(props) {
     // Three
     const { size, camera } = useThree();
     const { width, height } = size;
+
+    // Update custom attributes related to style when the modifiers change
+    useEffect(() => {
+        console.log('updating attributes...')
+        attributesRef.current = () => ({
+            // This is called when the final image is generated, when creator opens the Mint NFT modal.
+            // should return an object structured following opensea/enjin metadata spec for attributes/properties
+            // https://docs.opensea.io/docs/metadata-standards
+            // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema
+
+            attributes: [
+                {
+                    display_type: 'number',
+                    trait_type: '1st Modifier',
+                    value: options.mod1,
+                },
+                {
+                    display_type: 'number',
+                    trait_type: '2nd Modifier',
+                    value: options.mod2,
+                },
+                {
+                    display_type: 'number',
+                    trait_type: '3rd Modifier',
+                    value: options.mod3
+                },
+                {
+                    display_type: 'number',
+                    trait_type: 'color1 - not used',
+                    value: options.color1
+                }
+            ]
+        });
+    }, [options, attributesRef]);
 
     // Handle correct scaling of scene as canvas is resized, and when generating upscaled version.
     useEffect(() => {
@@ -101,39 +136,6 @@ export default function CustomStyle(props) {
             return Math.floor(255 * shuffleBag.current.random());
         }
     }, [block]);
-
-    // Required function to extract custom attributes related to style at the time of minting
-    attributesRef.current = () => {
-        return {
-            // This is called when the final image is generated, when creator opens the Mint NFT modal.
-            // should return an object structured following opensea/enjin metadata spec for attributes/properties
-            // https://docs.opensea.io/docs/metadata-standards
-            // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema
-
-            attributes: [
-                {
-                    display_type: 'number',
-                    trait_type: '1st Modifier',
-                    value: mod1,
-                },
-                {
-                    display_type: 'number',
-                    trait_type: '2nd Modifier',
-                    value: mod2,
-                },
-                {
-                    display_type: 'number',
-                    trait_type: '3rd Modifier',
-                    value: mod3
-                },
-                {
-                    display_type: 'number',
-                    trait_type: 'color1',
-                    value: color1,
-                }
-            ],
-        };
-    };
 
     // Render the scene
     return (

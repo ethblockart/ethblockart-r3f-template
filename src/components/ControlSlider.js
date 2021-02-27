@@ -2,9 +2,12 @@ import React from 'react';
 import './ControlSlider.css';
 
 const ControlSlider = function (props) {
-  const handleModChange = (event) => {
+  const {tallyUp} = props;
+
+  function handleModChange(event) {
     props.onChange(parseFloat(event.target.value));
-  };
+    tallyUp();
+  }
 
   return (
     <div className="control-slider">

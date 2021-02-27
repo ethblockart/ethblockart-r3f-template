@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ControlSlider from './ControlSlider';
 import ControlColorPicker from './ControlColorPicker';
 import './Sidebar.css';
 
 const Sidebar = function ({
-  mods,
-  blockNumber,
-  blocks,
-  attributes,
-  handleBlockChange,
+    mods,
+    blockNumber,
+    blocks,
+    attributesRef,
+    handleBlockChange,
+    tallyUp
 }) {
   const [isVisible, toggleVisibility] = useState(true);
+  const [attributes, setAttributes] = useState([]);
+
+  // Set attributes when attributesRef.current changes
+  useEffect(() => {
+      if (attributesRef.current) setAttributes(attributesRef.current())
+      // eslint-disable-next-line
+  }, [attributesRef.current, attributesRef] )
+
   const handleToggleVisibility = () => {
     toggleVisibility(!isVisible);
   };
@@ -26,6 +35,7 @@ const Sidebar = function ({
       <div className="section-header">Change Block</div>
       <div className="section-body">
         <ControlSlider
+          tallyUp={tallyUp}
           modValue={blockNumber}
           modValueMin="0"
           modValueMax={blocks.length - 1}
@@ -46,6 +56,7 @@ const Sidebar = function ({
                 controlLabel={key}
                 modValue={value}
                 onChange={set}
+                tallyUp={tallyUp}
               />
             );
           }
@@ -56,6 +67,7 @@ const Sidebar = function ({
               controlLabel={key}
               modValue={value}
               onChange={set}
+              tallyUp={tallyUp}
             />
           );
         })}
