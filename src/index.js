@@ -17,36 +17,36 @@ const store = proxy({
   For the rest, you can ignore this file, check CustomStyle.js
 */
 function App() {
-    const snap = useProxy(store);
-    const gl = useRef(null);
-    const attributesRef = useRef();
-    const [modChangeCount,setModChangeCount] = useState(0);
+  const snap = useProxy(store);
+  const gl = useRef(null);
+  const attributesRef = useRef();
+  const [modChangeCount, setModChangeCount] = useState(0);
 
-    useEffect(() => {
+  useEffect(() => {
     if (gl.current && snap.options.background) {
       gl.current.setClearColor(snap.options.background);
     }
-    },[snap.options.background, gl]);
+  }, [snap.options.background, gl]);
 
-    // Allow sidebar controls to trigger a delayed re-render that catches latest attributes
-    const tallyUp = () => {
-        setTimeout(() => setModChangeCount(modChangeCount+1),500)
-    }
+  // Allow sidebar controls to trigger a delayed re-render that catches latest attributes
+  const tallyUp = () => {
+    setTimeout(() => setModChangeCount(modChangeCount + 1), 500);
+  };
 
-    // At startup force a (more) delayed re-render to capture the initial attributes for display
-    if (!modChangeCount) setTimeout(() => tallyUp(), 500);
+  // At startup force a (more) delayed re-render to capture the initial attributes for display
+  if (!modChangeCount) setTimeout(() => tallyUp(), 500);
 
-    const mods = Object.keys(store.options).map((k) => {
-        return {
-          key: k,
-          value: snap.options[k],
-          set: (v) => {
-            store.options[k] = v;
-          },
-        };
-    });
+  const mods = Object.keys(store.options).map((k) => {
+    return {
+      key: k,
+      value: snap.options[k],
+      set: (v) => {
+        store.options[k] = v;
+      },
+    };
+  });
 
-    return (
+  return (
     <div style={{ display: 'flex', height: '100vh' }}>
       <div style={{ flexGrow: 1 }}>
         <div
@@ -79,7 +79,7 @@ function App() {
             <CustomStyle
               block={blocks[snap.blockNumber]}
               attributesRef={attributesRef}
-              options={snap.options}
+              {...snap.options}
             />
           </Canvas>
         </div>
@@ -94,7 +94,7 @@ function App() {
         handleBlockChange={(e) => (store.blockNumber = e)}
       />
     </div>
-    );
+  );
 }
 
 // export default App;
