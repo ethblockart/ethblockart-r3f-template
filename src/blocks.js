@@ -1,4 +1,4 @@
-export default [
+const blocks = [
   {
     hash: '0x62e08e8251e737360b664fcceec73c0fd26a640a2d27648ec38c00f2745426b8',
     parentHash:
@@ -8203,3 +8203,4 @@ export default [
     ],
   },
 ];
+export default blocks;
