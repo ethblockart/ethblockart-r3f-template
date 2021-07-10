@@ -2,6 +2,7 @@
   "name": "ethblockart-r3f-template",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@react-three/drei": "^2.2.15",
     "@testing-library/jest-dom": "^5.11.4",
